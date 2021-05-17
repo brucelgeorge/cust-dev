@@ -1,0 +1,49 @@
+name: centOSNewTest
+version: 3.0.0
+formatVersion: 1
+properties: null
+inputs:
+  cpuCount:
+    type: integer
+    description: Number of virtual processors
+    default: 1
+  totalMemoryMB:
+    type: integer
+    description: Machine virtual memory size in Megabytes
+    default: 1024
+resources:
+  Cloud_vSphere_Machine_1:
+    type: Cloud.vSphere.Machine
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      imageRef: centOS7template/BaseOS
+      cpuCount: '${input.cpuCount}'
+      applied_server_name: Mydata
+      totalMemoryMB: '${input.totalMemoryMB}'
+      constraints:
+        - tag: 'bruce:home'
+      networks:
+        - network: '${resource.Cloud_vSphere_Network_1.id}'
+        - network: '${resource.Cloud_vSphere_Network_2.id}'
+  Cloud_vSphere_Network_1:
+    type: Cloud.vSphere.Network
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      networkType: existing
+      constraints:
+        - tag: 'bruce:home'
+        - tag: 'NetworkStatus:Available'
+  Cloud_vSphere_Network_2:
+    type: Cloud.vSphere.Network
+    metadata:
+      layoutPosition:
+        - 2
+        - 0
+    properties:
+      networkType: existing
